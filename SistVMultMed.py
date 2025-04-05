@@ -1,3 +1,4 @@
+from datetime import datetime
 class Medicamento:
     def __init__(self):
         self.__nombre = "" 
@@ -23,7 +24,7 @@ class Mascota:
         self.__peso=" "
         self.__fecha_ingreso=" "
         self.__lista_medicamentos=[]
-
+  
     def verNombre(self):
         return self.__nombre
     def verHistoria(self):
@@ -36,7 +37,7 @@ class Mascota:
         return self.__fecha_ingreso
     def verLista_Medicamentos(self):
         return self.__lista_medicamentos 
-            
+    
     def asignarNombre(self,n):
         self.__nombre=n
     def asignarHistoria(self,nh):
@@ -55,9 +56,10 @@ class sistemaV:
         self.__lista_mascotas = []
         self.__dic_felinos = {}
         self.__dic_caninos = {}
-
-    # Definí dos métodos para ver en un string ordenado, el contenido de cada paciente almacenado en el diccionario correspondiente
     
+
+      
+      # Definí dos métodos para ver en un string ordenado, el contenido de cada paciente almacenado en el diccionario correspondiente
 
     def verFelinosHospitalizados(self):
       if not self.__dic_felinos:
@@ -67,6 +69,7 @@ class sistemaV:
       for historia, mascota in self.__dic_felinos.items():
         print(f"- Historia: {historia}, Nombre: {mascota.verNombre()}, Tipo: {mascota.verTipo()}, Peso: {mascota.verPeso()}, Fecha de ingreso: {mascota.verFecha()}")
 
+
     def verCaninosHospitalizados(self):
       if not self.__dic_caninos:
         print("No hay caninos hospitalizados.")
@@ -75,18 +78,19 @@ class sistemaV:
       for historia, mascota in self.__dic_caninos.items():
         print(f"- Historia: {historia}, Nombre: {mascota.verNombre()}, Tipo: {mascota.verTipo()}, Peso: {mascota.verPeso()}, Fecha de ingreso: {mascota.verFecha()}")
 
-#Definí dos métodos para agregar los felinos/ caninos al dicc
+      #Definí dos métodos para agregar los felinos/ caninos al diccionario correspondiente
     def ingresarFelino(self,mascota):
         historia = mascota.verHistoria()
         self.__dic_felinos[historia] = mascota
         print("Felino agregado correctamente a la base de datos.")
         #print("Diccionario actual de felinos:", self.__dic_felinos)
-    
+
     def ingresarCanino(self,mascota):
         historia = mascota.verHistoria()
         self.__dic_caninos[historia] = mascota
         print("Canino agregado correctamente a la base de datos.")
         #print("Diccionario actual de caninos:", self.__dic_caninos)
+
     
     def verificarExiste(self,historia):
         for m in self.__lista_mascotas:
@@ -126,7 +130,7 @@ class sistemaV:
                   del self.__dic_caninos[historia] #Eliminar del diccionario
                 return True #Eliminado con exito
         return False
-               
+
 
 
 def main():
@@ -150,16 +154,25 @@ def main():
             if servicio_hospitalario.verificarExiste(historia) == False:
                 nombre=input("Ingrese el nombre de la mascota: ")
                 while True:
-                    tipo=input("Ingrese el tipo de mascota (felino o canino): ") #Creo un bucle para asegurarme de que se ingrese un tipo de mascota correcto
-                    if tipo == "Felino" or tipo == "felino" or tipo == "Canino" or tipo == "canino":
-                        peso=int(input("Ingrese el peso de la mascota: "))
-                        fecha=input("Ingrese la fecha de ingreso (dia/mes/año): ")
-                        nm=int(input("Ingrese cantidad de medicamentos: "))
-                        lista_med=[]
-                        Nmed= [] #Creo lista vacia para agregar los nombres de medicamento que el usuario ingrese
-                        break
-                    else:
-                      print("Ingrese un tipo correcto (Felino o Canino)")  
+                  tipo=input("Ingrese el tipo de mascota (felino o canino): ") #Creo un bucle para asegurarme de que se ingrese un tipo de mascota correcto
+                  if tipo == "Felino" or tipo == "felino" or tipo == "Canino" or tipo == "canino":
+                    peso=int(input("Ingrese el peso de la mascota: "))
+                    while True:
+                      fecha = input("Ingrese la fecha de ingreso (dd/mm/aaaa): ")
+                      try:
+                        datetime.strptime(fecha, "%d/%m/%Y")  # Intenta convertir la fecha al formato
+                        break  # Si no hay error, sal del bucle
+                      
+                      except ValueError:
+                        print("Formato de fecha incorrecto. Intenta de nuevo con el formato dd/mm/aaaa.")
+                    nm=int(input("Ingrese cantidad de medicamentos: "))
+                    lista_med=[]
+                    Nmed= [] #Creo lista vacia para agregar los nombres de medicamento que el usuario ingrese
+                    break
+
+                  else:
+                    print("Ingrese un tipo correcto (Felino o Canino)")
+
                 for i in range(0,nm):
                     while True: #creo un bucle para que se repita la pregunta si el medicamento está repetido
                         nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
@@ -192,6 +205,8 @@ def main():
                 #servicio_hospitalario.verFelinosHospitalizados()
                 #servicio_hospitalario.verCaninosHospitalizados()
 
+
+            
 
                 
 
@@ -227,6 +242,9 @@ def main():
             resultado_operacion = servicio_hospitalario.eliminarMascota(q) 
             if resultado_operacion == True:
                 print("Mascota eliminada del sistema con exito")
+                servicio_hospitalario.verFelinosHospitalizados()
+                servicio_hospitalario.verCaninosHospitalizados()
+                
             else:
                 print("No se ha podido eliminar la mascota")
         
