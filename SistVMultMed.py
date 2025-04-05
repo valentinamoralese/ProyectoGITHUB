@@ -113,14 +113,24 @@ def main():
                 fecha=input("Ingrese la fecha de ingreso (dia/mes/año): ")
                 nm=int(input("Ingrese cantidad de medicamentos: "))
                 lista_med=[]
+                Nmed= [] #Creo lista vacia para agregar los nombres de medicamento que el usuario ingrese
 
                 for i in range(0,nm):
-                    nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
-                    dosis =int(input("Ingrese la dosis: "))
-                    medicamento = Medicamento()
-                    medicamento.asignarNombre(nombre_medicamentos)
-                    medicamento.asignarDosis(dosis)
-                    lista_med.append(medicamento)
+                    while True: #creo un bucle para que se repita la pregunta si el medicamento está repetido
+                        nombre_medicamentos = input("Ingrese el nombre del medicamento: ")
+                        
+                        if nombre_medicamentos in Nmed:
+                            print("Está repetido :c, intenta de nuevo") #vuelve  a preguntar hasta que ingrese un nuevo medicamento
+                        else:
+                            Nmed.append(nombre_medicamentos) #Agrego el nuevo medicamento a mi lista
+                            dosis =int(input("Ingrese la dosis: "))
+                            medicamento = Medicamento()
+                            medicamento.asignarNombre(nombre_medicamentos)
+                            medicamento.asignarDosis(dosis)
+                            lista_med.append(medicamento)
+                            break #Si el medicamento no está repetido, me salgo del bucle y continuo
+                    
+                       
 
                 mas= Mascota()
                 mas.asignarNombre(nombre)
@@ -130,6 +140,8 @@ def main():
                 mas.asignarFecha(fecha)
                 mas.asignarLista_Medicamentos(lista_med)
                 servicio_hospitalario.ingresarMascota(mas)
+
+                
 
             else:
                 print("Ya existe la mascota con el numero de histoira clinica")
@@ -175,12 +187,3 @@ def main():
 
 if __name__=='__main__':
     main()
-
-
-
-
-
-            
-
-                
-
