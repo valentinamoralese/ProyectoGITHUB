@@ -57,7 +57,20 @@ class sistemaV:
         self.__dic_felinos = {}
         self.__dic_caninos = {}
     
-
+    # Defino método para eliminar medicamento
+    def eliminarMedicamento(self, historia, nombre_medicamento):
+        for masc in self.__lista_mascotas: #recorre la lista de mascotas buscando la historia clinica
+            if historia == masc.verHistoria():
+                lista = masc.verLista_Medicamentos() #se obtiene la lista de medicamentos de la mascota
+                for med in lista:
+                    if med.verNombre().lower() == nombre_medicamento.lower(): #comparo todo pasando a minuscula para evitar errores
+                        lista.remove(med) #elimina el medicamento de la lista
+                        print(f"Medicamento '{nombre_medicamento}' eliminado correctamente.") #mensaje de confirmación
+                        return True
+                print("El medicamento no fue encontrado.") #cuando se ingresa un medicamento que no está en la lista
+                return False
+        print("No existe una mascota con esa historia clínica.") #historia clinica invalida
+        return False
       
       # Definí dos métodos para ver en un string ordenado, el contenido de cada paciente almacenado en el diccionario correspondiente
 
@@ -142,8 +155,9 @@ def main():
                        \n2- Ver fecha de ingreso 
                        \n3- Ver número de mascotas en el servicio 
                        \n4- Ver medicamentos que se están administrando
-                       \n5- Eliminar mascota 
-                       \n6- Salir 
+                       \n5- Eliminar mascota
+                       \n6- Eliminar medicamento de una mascota
+                       \n7- Salir 
                        \nUsted ingresó la opción: ''' ))
         if menu==1: # Ingresar una mascota 
             if servicio_hospitalario.verNumeroMascotas() >= 10:
@@ -247,8 +261,12 @@ def main():
                 
             else:
                 print("No se ha podido eliminar la mascota")
-        
-        elif menu==6:
+        elif menu==6: #añado nueva opcion al menú
+            historia = int(input("Ingrese la historia clínica de la mascota: "))
+            nombre_medicamento = input("Ingrese el nombre del medicamento que desea eliminar: ")
+            servicio_hospitalario.eliminarMedicamento(historia, nombre_medicamento) #aplico método
+
+        elif menu==7:
             print("Usted ha salido del sistema de servicio de hospitalización...")
             break
         
